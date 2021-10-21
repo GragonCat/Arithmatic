@@ -48,6 +48,7 @@ public class RBTree<K extends Comparable<K>,V> {
         }
         RBNode rbNode = new RBNode(key,value == null?key:value);
         if(root == null){
+            //根节点为黑色
             rbNode.color = BLACK;
             root = rbNode;
             return;
@@ -106,13 +107,14 @@ public class RBTree<K extends Comparable<K>,V> {
             if(parentOf(rbNode) == parentOf(parentOf(rbNode)).left){
                 RBNode uncle = rightOf(parentOf(parentOf(rbNode)));
 
-                /* 红色说明有叔叔节点(特性3和5)，只需要变色，不需要旋转(没有破坏高度差)
+                /*
                  *         BLACK            BLACK                          RED               RED
                  *          / \             /   \                         /   \             /   \
                  *       RED   RED        RED    RED     ====》        BLACK  BLACK       BLACK  BLACK
                  *        /                 \                          /                     \
                  *     RED                   RED                      RED                    RED
                  * */
+                //红色说明有叔叔节点并且是红色(特性3和5)，只需要变色，不需要旋转
                 if(colorOf(uncle) == RED){
                     setColor(parentOf(parentOf(rbNode)),RED);
                     setColor(parentOf(rbNode),BLACK);
@@ -120,10 +122,10 @@ public class RBTree<K extends Comparable<K>,V> {
                     //可以将当前的祖孙三代树看做一个红色节点，进行向上递归变色,借助循环向上迭代
                     rbNode = parentOf(parentOf(rbNode));
                 }else{
-                    /* 没有叔叔节点(特性3和5)，需要变色，旋转(破坏了高度差)
+                    /* 没有叔叔节点或者叔叔节点为黑色(特性3和5)，需要变色，旋转
                      *          BLACK                    BLACK
                      *          /                       /
-                     *（1）    RED 爷爷节点（右旋）   （2）RED  父节点左旋，爷爷节点再右旋           ====》       BLACK
+                     *（1）    RED  爷爷节点（右旋）   （2）RED  父节点左旋，爷爷节点再右旋           ====》       BLACK
                      *        /                          \                                              /     \
                      *     RED                            RED                                          RED     RED
                      *
@@ -148,7 +150,7 @@ public class RBTree<K extends Comparable<K>,V> {
             }else{//如果 父节点为爷爷节点的右子节点
                 RBNode uncle = leftOf(parentOf(parentOf(rbNode)));
 
-                /* 红色说明有叔叔节点并且是红色(特性3和5)，只需要变色，不需要旋转(没有破坏高度差)
+                /* 红色说明有叔叔节点并且是红色(特性3和5)，只需要变色，不需要旋转
                  *         BLACK            BLACK                          RED               RED
                  *          / \             /   \                         /   \             /   \
                  *       RED   RED        RED    RED     ====》        BLACK  BLACK       BLACK  BLACK
@@ -162,7 +164,7 @@ public class RBTree<K extends Comparable<K>,V> {
                     //可以将当前的祖孙三代树看做一个红色节点，进行向上递归变色,借助循环向上迭代
                     rbNode = parentOf(parentOf(rbNode));
                 }else{
-                    /* 没有叔叔节点或者叔叔节点是黑色(特性3和5)，旋转(破坏了高度差)，变色
+                    /* 没有叔叔节点或者叔叔节点是黑色(特性3和5)，旋转，变色
                      *          BLACK                             BLACK
                      *              \                                 \
                      *（2）         RED 父节点右旋，爷爷节点再左旋    （1） RED  爷爷节点左旋           ====》       BLACK
