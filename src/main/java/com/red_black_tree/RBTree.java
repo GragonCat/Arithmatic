@@ -114,7 +114,7 @@ public class RBTree<K extends Comparable<K>,V> {
                  *        /                 \                          /                     \
                  *     RED                   RED                      RED                    RED
                  * */
-                //红色说明有叔叔节点并且是红色(特性3和5，任意路径的黑色节点数量相同，不能是黑色)，只需要变色，不需要旋转
+                //红色说明有叔叔节点并且只能是红色(特性3和5，任意路径的黑色节点数量相同，不能是黑色)，只需要变色，不需要旋转
                 if(colorOf(uncle) == RED){
                     setColor(parentOf(parentOf(rbNode)),RED);
                     setColor(parentOf(rbNode),BLACK);
@@ -167,7 +167,7 @@ public class RBTree<K extends Comparable<K>,V> {
                     /* 没有叔叔节点(特性3和5,任意路径的黑色节点数量相同，所以只能是空节点)，旋转，变色
                      *          BLACK                             BLACK
                      *              \                                 \
-                     *（2）         RED 父节点右旋，爷爷节点再左旋    （1） RED  爷爷节点左旋           ====》       BLACK
+                     *（1）         RED 父节点右旋，爷爷节点再左旋    （2） RED  爷爷节点左旋           ====》       BLACK
                      *                \                               /                                     /     \
                      *                RED                           RED                                   RED     RED
                      *
