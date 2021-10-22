@@ -100,8 +100,9 @@ public class RBTree<K extends Comparable<K>,V> {
     *     RED                    RED                RED                        RED
      * */
     public void fixTreeAfterPutVal(RBNode rbNode) {
+        //新节点都为红色
         setColor(rbNode,RED);
-
+        //循环向上遍历
         while(rbNode != null && rbNode != root && parentOf(rbNode).color == RED){
             //如果 父节点为爷爷节点的左子节点
             if(parentOf(rbNode) == parentOf(parentOf(rbNode)).left){
@@ -194,6 +195,7 @@ public class RBTree<K extends Comparable<K>,V> {
 
 
         }
+        //根节点一定为黑色
         setColor(RBTree.root,BLACK);
     }
 
