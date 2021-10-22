@@ -114,7 +114,7 @@ public class RBTree<K extends Comparable<K>,V> {
                  *        /                 \                          /                     \
                  *     RED                   RED                      RED                    RED
                  * */
-                //红色说明有叔叔节点并且是红色(特性3和5)，只需要变色，不需要旋转
+                //红色说明有叔叔节点并且是红色(特性3和5，任意路径的黑色节点数量相同，不能是黑色)，只需要变色，不需要旋转
                 if(colorOf(uncle) == RED){
                     setColor(parentOf(parentOf(rbNode)),RED);
                     setColor(parentOf(rbNode),BLACK);
@@ -122,7 +122,7 @@ public class RBTree<K extends Comparable<K>,V> {
                     //可以将当前的祖孙三代树看做一个红色节点，进行向上递归变色,借助循环向上迭代
                     rbNode = parentOf(parentOf(rbNode));
                 }else{
-                    /* 没有叔叔节点或者叔叔节点为黑色(特性3和5)，需要变色，旋转
+                    /* 或者没有叔叔节点(特性3和5，任意路径的黑色节点数量相同，不能是黑色)，需要变色，旋转
                      *          BLACK                    BLACK
                      *          /                       /
                      *（1）    RED  爷爷节点（右旋）   （2）RED  父节点左旋，爷爷节点再右旋           ====》       BLACK
@@ -150,7 +150,7 @@ public class RBTree<K extends Comparable<K>,V> {
             }else{//如果 父节点为爷爷节点的右子节点
                 RBNode uncle = leftOf(parentOf(parentOf(rbNode)));
 
-                /* 红色说明有叔叔节点并且是红色(特性3和5)，只需要变色，不需要旋转
+                /* 红色说明有叔叔节点并且只能是红色(特性3和5，任意路径的黑色节点数量相同，不能是黑色)，只需要变色，不需要旋转
                  *         BLACK            BLACK                          RED               RED
                  *          / \             /   \                         /   \             /   \
                  *       RED   RED        RED    RED     ====》        BLACK  BLACK       BLACK  BLACK
@@ -164,7 +164,7 @@ public class RBTree<K extends Comparable<K>,V> {
                     //可以将当前的祖孙三代树看做一个红色节点，进行向上递归变色,借助循环向上迭代
                     rbNode = parentOf(parentOf(rbNode));
                 }else{
-                    /* 没有叔叔节点或者叔叔节点是黑色(特性3和5)，旋转，变色
+                    /* 没有叔叔节点(特性3和5,任意路径的黑色节点数量相同，所以只能是空节点)，旋转，变色
                      *          BLACK                             BLACK
                      *              \                                 \
                      *（2）         RED 父节点右旋，爷爷节点再左旋    （1） RED  爷爷节点左旋           ====》       BLACK
