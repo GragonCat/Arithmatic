@@ -39,6 +39,14 @@ import java.util.Map;
  *
  *
  */
+
+/**
+* 思路：
+*   将所有单词存进hashmap中，次数叠加，遍历单词数组，查找单词在字符串中出现的位置，往后遍历字符串进行匹配，如果在hashmap中存在且value > 0，则继续匹配，直到所有单词都匹配完
+*
+*
+*
+*/
 public class No30_FindSubString {
     public static List<Integer> findSubstring(String s, String[] words) {
         int wordLen = words[0].length();
